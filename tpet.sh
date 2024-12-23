@@ -80,8 +80,6 @@ random_line() {
   if [ -f "$file" ]; then
     mapfile -t lines < "$file"
     line="${lines[$((RANDOM % ${#lines[@]}))]}"
-    echo "Cowfile path: $COWFILE"
-    ls -l "$COWFILE"
     eval cowsay -f "$COWFILE" "$line"
   else
     echo "IDK what to say when I feel $mood, this is a debug message... Whatever that means" | cowsay -f "$COWFILE"
