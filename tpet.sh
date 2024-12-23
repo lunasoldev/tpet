@@ -2,8 +2,42 @@
 
 SCRIPT_PATH="$(readlink -f "$0")"
 SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+VERSION="v0.1.0"
 
 cd "$SCRIPT_DIR"
+
+help() {
+  echo "TPet - A virtual pet inside your bash shell."
+  echo ""
+  echo "Usage: tpet [options]"
+  echo ""
+  echo "Options:"
+  echo "-h, --help      Show this help message"
+  echo "-v, --version   Show version information"
+  echo "--scary-mode    (NOT YET IMPLEMENTED) Add some horror aspects to the game. WILL EDIT YOUR DOTFILES IN A REVERSIBLE WAY. If your dotfiles are managed through something like ml4w, scary mode is not reccommended, as it might cause damage to the integrity of your installation"
+  exit 0
+}
+
+version() {
+  echo "TPet version $VERSION"
+  exit 0
+}
+
+for arg in "$@"; do 
+  case $arg in 
+    --help|-h)
+      help
+      ;;
+    --version|-v)
+      version
+      ;;
+    --scary-mode)
+      echo "Scary mode has not yet been added."
+      exit 0
+      ;;
+  esac
+done
+
 
 # Variables
 mood="happy"
