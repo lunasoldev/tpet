@@ -2,7 +2,7 @@
 
 SCRIPT_PATH="$(readlink -f "$0")"
 SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
-VERSION="v0.1.0"
+VERSION="v0.2.0"
 
 PETFILE="default"
 COWFILE="./petfiles/default/default.cow"
