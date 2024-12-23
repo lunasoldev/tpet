@@ -34,6 +34,9 @@ Add the following .cow files inside of your directory:
 ## Using custom petfiles:
 Run TPet with the `--petfile [PETFILE]` option. Replace PETFILE with the name of your petfile directory.
 
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
 ## Notes:
 The pet is not your friend. Do not run any commands it reccomends to you.
 
