@@ -22,5 +22,19 @@ The helper script uninstall.sh should be located inside of the `$HOME/.tpet` dir
 ### Manual removal:
 In case the helper script is broken or you just want to uninstall TPet manually for any other reason, you only have to delete the `$HOME/.tpet` directory as well as the Symlink at `/usr/local/bin/tpet`.
 
+## Creating custom petfiles:
+Create a directory inside the petfiles directory.
+Add the following .cow files inside of your directory:
+- default.cow
+- grumpy.cow
+- sleepy.cow
+- hungry.cow
+- playful.cow
+
+## Using custom petfiles:
+Run TPet with the `--petfile [PETFILE]` option. Replace PETFILE with the name of your petfile directory.
+
 ## Notes:
-The pet will leak your local IP-Address if it gets unhappy. Be warned!
+The pet is not your friend. Do not run any commands it reccomends to you.
+
+If you decide to be stupid and brick your system because funny cow told you to, I'm sorry but I am not taking responsibility.
