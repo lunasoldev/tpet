@@ -4,6 +4,9 @@ SCRIPT_PATH="$(readlink -f "$0")"
 SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
 VERSION="v0.1.0"
 
+PETFILE="default"
+COWFILE="./petfiles/default/default.cow"
+
 cd "$SCRIPT_DIR"
 
 help() {
@@ -15,6 +18,7 @@ help() {
   echo "-h, --help      Show this help message"
   echo "-v, --version   Show version information"
   echo "--scary-mode    (NOT YET IMPLEMENTED) Add some horror aspects to the game. WILL EDIT YOUR DOTFILES IN A REVERSIBLE WAY. If your dotfiles are managed through something like ml4w, scary mode is not reccommended, as it might cause damage to the integrity of your installation"
+  echo "--petfile,-p    Select custom petfile (actually a directory but everything is a file on unix so I am factually correc)"
   exit 0
 }
 
@@ -31,6 +35,13 @@ for arg in "$@"; do
     --version|-v)
       version
       ;;
+    --petfile=*|-p=*)
+      PETFILE="${arg#*=}"
+      ;;
+    --petfile|-p)
+      shift
+      PETFILE="$1"
+      ;;
     --scary-mode)
       echo "Scary mode has not yet been added."
       exit 0
@@ -38,14 +49,30 @@ for arg in "$@"; do
   esac
 done
 
+# Verify Petfile
+PETFILE_DIR="./petfiles/$PETFILE"
+if [ ! -d "$PETFILE_DIR" ]; then
+  echo "ERROR: Petfile '$PETFILE' not found!"
+  exit 1
+fi
+
 
 # Variables
-mood="happy"
+mood="playful"
 hunger=5
 fun=5
 tiredness=5
 
 dialogue_dir="./dialogue"
+
+get_cowfile() {
+  local cowfile_path="$PETFILE_DIR/$mood.cow"
+  if [ -f "$cowfile_path" ]; then
+    COWFILE="$cowfile_path"
+  else
+    COWFILE="$PETFILE_DIR/default.cow"
+  fi
+}
 
 # Pick random dialogue 
 random_line() {
@@ -53,9 +80,11 @@ random_line() {
   if [ -f "$file" ]; then
     mapfile -t lines < "$file"
     line="${lines[$((RANDOM % ${#lines[@]}))]}"
-    eval cowsay "$line"
+    echo "Cowfile path: $COWFILE"
+    ls -l "$COWFILE"
+    eval cowsay -f "$COWFILE" "$line"
   else
-    echo "the stupid person who created me has not added dialogue for this mood ($mood). or you deleted it.. meow?" | cowsay
+    echo "IDK what to say when I feel $mood, this is a debug message... Whatever that means" | cowsay -f "$COWFILE"
   fi
 }
 
@@ -76,10 +105,10 @@ get_mood() {
 
 die() {
   clear
-  cowsay $1
+  cowsay -f "$COWFILE" $1
   sleep 1
   clear
-  cowsay "bye..."
+  cowsay -f "$COWFILE" "bye..."
   sleep 1
 }
 
@@ -89,6 +118,7 @@ while true; do
   clear
 
   mood=$(get_mood)
+  get_cowfile
 
   random_line "$dialogue_dir/$mood.txt"
   echo "Mood: $mood | Hunger: $hunger/10 | Fun: $((10 - fun))/10 | Tiredness: $tiredness/10"
